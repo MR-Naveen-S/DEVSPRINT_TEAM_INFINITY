@@ -1627,13 +1627,6 @@ body {
   font-weight: 700;
 }
 
-/* Seeded Action Buttons */
-.btn-xs {
-  padding: 0.15rem 0.45rem;
-  font-size: 0.68rem;
-  border-radius: var(--radius-xs);
-}
-
 /* Phase 3 Dossier */
 .report-dossier-container {
   display: grid;
@@ -1943,10 +1936,15 @@ body {
 }
 
 .btn-xs {
-  padding: 0.2rem 0.5rem;
-  font-size: 0.68rem;
+  padding: 0.22rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 600;
   line-height: 1.2;
   border-radius: var(--radius-xs);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 }
 
 .btn-primary {

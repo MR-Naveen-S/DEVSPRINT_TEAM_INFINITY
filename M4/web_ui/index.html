@@ -757,9 +757,9 @@
                 <div class="dossier-body">
                   <p>Instead of naive mean & standard deviation (which are easily corrupted by outlier spikes), the baseline uses:</p>
                   <ul class="dossier-list">
-                    <li><strong>Rolling 28-Day Median ($	ilde{\mu}_{28}$):</strong> Resistant to up to 50% contamination in the lookback window.</li>
-                    <li><strong>Median Absolute Deviation (MAD):</strong> $\sigma_{	ext{MAD}} = 1.4826 	imes 	ext{median}(|x_i - 	ilde{\mu}|)$ for normal consistency.</li>
-                    <li><strong>Statistical Noise Floor:</strong> $\sigma_{	ext{eff}} = \max(\sigma_{	ext{MAD}}, \sqrt{	ilde{\mu}_{	ext{Poisson}}}, 	ext{Floor}_{	ext{min}})$.</li>
+                    <li><strong>Rolling 28-Day Median (μ̃₂₈):</strong> Resistant to up to 50% contamination in the lookback window.</li>
+                    <li><strong>Median Absolute Deviation (MAD):</strong> σ_MAD = 1.4826 × median(|xᵢ - μ̃|) for normal distribution consistency.</li>
+                    <li><strong>Statistical Noise Floor:</strong> σ_eff = max(σ_MAD, √μ̃_Poisson, Floor_min) to protect low-volume counts.</li>
                     <li><strong>14-Day Freeze Memory:</strong> Detected true anomalies are excluded from future baselines to prevent gradual baseline decay.</li>
                   </ul>
                 </div>
@@ -776,8 +776,8 @@
                     <code>SeverityScore = TypeWeight &times; min(|DeviationPct| / 100, 3.0) &times; SpendShareWeight</code>
                   </div>
                   <ul class="dossier-list">
-                    <li><strong>Immediate Pager Stream:</strong> Dispatched immediately for high severity ($S \ge 0.60$) or core outage incidents (Tracking Break, Budget Outage).</li>
-                    <li><strong>Daily Digest Stream:</strong> Batched into morning summary reports for lower-severity drift ($S < 0.60$) and peer-seasonal movements.</li>
+                    <li><strong>Immediate Pager Stream:</strong> Dispatched immediately for high severity (Score ≥ 0.60) or core outage incidents (Tracking Break, Budget Outage).</li>
+                    <li><strong>Daily Digest Stream:</strong> Batched into morning summary reports for lower-severity drift (Score &lt; 0.60) and peer-seasonal movements.</li>
                   </ul>
                 </div>
               </div>
@@ -789,7 +789,7 @@
                 </div>
                 <div class="dossier-body">
                   <ul class="dossier-list">
-                    <li><strong>Low Conversion Volume Campaigns:</strong> Poisson floor ($\sqrt{\lambda}$) prevents small accounts (e.g. 2 conv/day) from falsely alerting when 0 occurs.</li>
+                    <li><strong>Low Conversion Volume Campaigns:</strong> Poisson floor (√λ) prevents small accounts (e.g. 2 conv/day) from falsely alerting when 0 occurs.</li>
                     <li><strong>Account-Wide Seasonal Days (e.g., Black Friday):</strong> Peer correlation filter evaluates cohort deviation; if &ge; 40% of campaigns move together, routing switches from Pager to Digest.</li>
                     <li><strong>Zero Denominator Protection:</strong> CVR and CPA metrics enforce a minimum click/conversion threshold before computing division.</li>
                   </ul>
