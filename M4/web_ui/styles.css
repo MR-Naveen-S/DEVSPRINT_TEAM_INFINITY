@@ -34,9 +34,9 @@
   --radius-lg: 12px;
 }
 
-/* Base Scaling for Compact Dashboard Look (13.5px base gives clean 90% feel at 100%) */
+/* Base Scaling for Clean Enterprise Dashboard Density */
 html {
-  font-size: 13.5px;
+  font-size: 14.5px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -728,14 +728,14 @@ body {
 /* ECharts Container Styles */
 .chart-container-echarts {
   width: 100%;
-  height: 330px;
+  height: 360px;
   position: relative;
   border-radius: var(--radius-md);
 }
 
 .chart-container-echarts-sm {
   width: 100%;
-  height: 220px;
+  height: 240px;
   position: relative;
 }
 
@@ -831,16 +831,16 @@ body {
 }
 
 .triage-feed {
-  max-height: 380px;
+  max-height: 480px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  padding-right: 0.2rem;
+  gap: 0.75rem;
+  padding-right: 0.35rem;
 }
 
 .triage-feed::-webkit-scrollbar {
-  width: 4px;
+  width: 5px;
 }
 .triage-feed::-webkit-scrollbar-thumb {
   background-color: var(--border-medium);
@@ -852,79 +852,178 @@ body {
   background-color: var(--bg-subsurface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 0.75rem;
+  padding: 0.85rem 0.95rem;
   transition: all var(--transition-fast);
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
 }
 
 .triage-card:hover {
   border-color: var(--border-medium);
-  transform: translateY(-1px);
+  background-color: var(--bg-surface);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
-.triage-card.border-red {
-  border-left: 3px solid var(--red-500);
+.triage-card.severity-high, .triage-card.p1 {
+  border-left: 4px solid var(--red-500);
+  background: linear-gradient(135deg, var(--bg-subsurface) 0%, rgba(239, 68, 68, 0.06) 100%);
 }
 
-.triage-card.border-amber {
-  border-left: 3px solid var(--amber-500);
+.triage-card.severity-medium, .triage-card.p2 {
+  border-left: 4px solid var(--amber-500);
+  background: linear-gradient(135deg, var(--bg-subsurface) 0%, rgba(245, 158, 11, 0.06) 100%);
+}
+
+.triage-card.severity-low, .triage-card.p3 {
+  border-left: 4px solid var(--blue-500);
 }
 
 .triage-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.4rem;
+  gap: 0.5rem;
 }
 
-.triage-type {
+.triage-type-tag {
   font-size: 0.72rem;
   font-weight: 700;
   color: var(--text-primary);
   text-transform: uppercase;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+}
+
+.triage-card.severity-high .triage-type-tag {
+  color: #f87171;
+}
+
+.triage-card.severity-medium .triage-type-tag {
+  color: #fbbf24;
 }
 
 .triage-campaign-badge {
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-family: var(--font-mono);
+  font-weight: 700;
   background-color: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  padding: 0.1rem 0.35rem;
+  border: 1px solid var(--border-medium);
+  padding: 0.12rem 0.45rem;
   border-radius: 4px;
   color: var(--brand-primary);
 }
 
-.triage-metric-row {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  margin-bottom: 0.35rem;
+.triage-date {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+  font-weight: 600;
 }
 
-.triage-delta {
-  font-size: 0.85rem;
+.triage-delta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.delta-badge {
+  font-size: 0.74rem;
   font-weight: 800;
   font-family: var(--font-mono);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  letter-spacing: -0.01em;
 }
 
-.delta-red { color: var(--red-500); }
-.delta-green { color: var(--emerald-500); }
+.delta-neg {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
 
-.triage-metric-name {
-  font-size: 0.72rem;
+.delta-pos {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: var(--emerald-400);
+  border: 1px solid var(--brand-border);
+}
+
+.triage-metric-stat {
+  font-size: 0.76rem;
   color: var(--text-secondary);
 }
 
-.triage-explanation {
-  font-size: 0.72rem;
-  color: var(--text-secondary);
-  line-height: 1.35;
-  margin-bottom: 0.5rem;
+.triage-metric-stat b {
+  color: var(--text-primary);
 }
 
-.triage-actions {
+.triage-snippet {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0.2rem 0 0.4rem;
+}
+
+.triage-actions-bar {
   display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Styled Action Buttons inside Alert Cards */
+.btn-card-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 0.35rem;
+  padding: 0.32rem 0.65rem;
+  font-size: 0.74rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.btn-card-action svg {
+  flex-shrink: 0;
+}
+
+.btn-card-action:hover {
+  background-color: var(--bg-hover);
+  border-color: var(--brand-primary);
+  color: var(--brand-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-card-action.btn-inspect:hover {
+  border-color: var(--cyan-500);
+  color: var(--cyan-500);
+}
+
+.btn-card-action.btn-ack:hover {
+  border-color: var(--emerald-500);
+  color: var(--emerald-500);
+}
+
+.btn-card-action.btn-mute:hover {
+  border-color: var(--amber-500);
+  color: var(--amber-500);
 }
 
 /* ================= Parameter Tuner Strip ================= */
@@ -1758,6 +1857,13 @@ body {
 .btn-sm {
   padding: 0.3rem 0.65rem;
   font-size: 0.74rem;
+}
+
+.btn-xs {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.68rem;
+  line-height: 1.2;
+  border-radius: var(--radius-xs);
 }
 
 .btn-primary {
