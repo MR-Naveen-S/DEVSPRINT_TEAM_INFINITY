@@ -906,6 +906,7 @@ body {
 
 /* Individual Incident Card inside Triage Feed */
 .triage-card {
+  flex-shrink: 0;
   background-color: var(--bg-subsurface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
