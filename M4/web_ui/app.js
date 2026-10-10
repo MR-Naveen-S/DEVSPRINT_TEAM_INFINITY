@@ -355,10 +355,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function initNavigation() {
     const navItems = document.querySelectorAll('.sidebar-nav .nav-item');
+    const sidebar = document.getElementById('app-sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const btnMobileMenu = document.getElementById('btn-mobile-menu');
+
+    if (btnMobileMenu && sidebar && sidebarOverlay) {
+      btnMobileMenu.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('active');
+      });
+
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+      });
+    }
+
     navItems.forEach(item => {
       item.addEventListener('click', () => {
         const tab = item.getAttribute('data-tab');
         if (tab) switchTab(tab);
+        if (window.innerWidth <= 1024 && sidebar && sidebarOverlay) {
+          sidebar.classList.remove('open');
+          sidebarOverlay.classList.remove('active');
+        }
       });
     });
 

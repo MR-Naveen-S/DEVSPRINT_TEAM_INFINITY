@@ -19,8 +19,11 @@
   <!-- Global App Layout -->
   <div class="app-layout">
     
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
     <!-- Left Slim Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="app-sidebar">
       <div class="sidebar-brand">
         <div class="brand-logo">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -76,13 +79,19 @@
       
       <!-- Top App Bar -->
       <header class="topbar">
-        <div class="search-container">
-          <div class="search-box">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="global-search" placeholder="Search campaign (e.g. C01, CO1, tracking, budget), incident, or date..." autocomplete="off" />
-            <span class="search-shortcut">⌘K</span>
+        <div class="topbar-left">
+          <button class="mobile-menu-btn" id="btn-mobile-menu" aria-label="Toggle navigation menu" title="Menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          
+          <div class="search-container">
+            <div class="search-box">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="global-search" placeholder="Search campaign (e.g. C01, CO1, tracking, budget)..." autocomplete="off" />
+              <span class="search-shortcut">⌘K</span>
+            </div>
+            <div class="search-dropdown" id="global-search-dropdown"></div>
           </div>
-          <div class="search-dropdown" id="global-search-dropdown"></div>
         </div>
 
         <div class="topbar-actions">
