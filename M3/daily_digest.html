@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Anomaly Intelligence Center</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-body: #0b0f19;
+            --bg-card: rgba(18, 24, 38, 0.75);
+            --bg-card-hover: rgba(26, 35, 54, 0.9);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --primary-blue: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.35);
+            --accent-red: #ef4444;
+            --accent-red-glow: rgba(239, 68, 68, 0.35);
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-sky: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-sub: #cbd5e1;
+        }
+        
+        * {
+            box-sizing: border-box;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 24px;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(239, 68, 68, 0.1) 0%, transparent 45%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Top Navigation Header */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 20px 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+        
+        .brand-text h1 {
+            margin: 0;
+            font-size: 1.4em;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .brand-text p {
+            margin: 2px 0 0 0;
+            font-size: 0.85em;
+            color: var(--text-muted);
+        }
+        
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #34d399;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #34d399;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #34d399;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        /* Dashboard Charts & KPI Summary Grid */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .chart-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .chart-card h3 {
+            margin: 0 0 16px 0;
+            font-size: 1.05em;
+            font-weight: 700;
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .kpi-column {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .kpi-mini-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .kpi-info h4 {
+            margin: 0;
+            font-size: 0.8em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .kpi-info .val {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-top: 4px;
+            display: block;
+        }
+        
+        .kpi-badge {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+        }
+        
+        /* Interactive Controls Bar */
+        .controls-bar {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 16px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 260px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            padding: 12px 16px 12px 42px;
+            color: #ffffff;
+            font-size: 0.9em;
+            font-family: inherit;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        .filter-pills {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .pill:hover, .pill.active {
+            background: var(--primary-blue);
+            color: #ffffff;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+        
+        .pill.active-immediate {
+            background: var(--accent-red);
+            color: #ffffff;
+            border-color: var(--accent-red);
+            box-shadow: 0 0 15px var(--accent-red-glow);
+        }
+        
+        /* Anomaly Cards Grid */
+        .cards-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        
+        .alert-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .alert-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .alert-card.route-immediate {
+            border-left: 6px solid var(--accent-red);
+        }
+        
+        .alert-card.route-digest {
+            border-left: 6px solid var(--primary-blue);
+        }
+        
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .campaign-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .campaign-badge {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85em;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+        
+        .metric-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        .badges-group {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .tag-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        
+        .tag-immediate {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+        
+        .tag-digest {
+            background: rgba(56, 189, 248, 0.15);
+            color: #7dd3fc;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+        }
+        
+        .tag-severity-high {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+        
+        .tag-severity-medium {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+        }
+        
+        .tag-severity-low {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+        
+        /* Metric Comparison Grid inside Card */
+        .metric-comparison {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .comp-box span.lbl {
+            display: block;
+            font-size: 0.75em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .comp-box span.val {
+            display: block;
+            font-size: 1.25em;
+            font-weight: 800;
+            margin-top: 4px;
+        }
+        
+        .val-observed { color: #ffffff; }
+        .val-expected { color: var(--text-sub); }
+        .val-delta-neg { color: #f87171; }
+        .val-delta-pos { color: #34d399; }
+        
+        /* Explanation & Action Box */
+        .narrative-box {
+            color: var(--text-sub);
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .action-card {
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 10px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9em;
+            color: #93c5fd;
+        }
+        
+        .action-icon {
+            font-size: 1.3em;
+        }
+        
+        .card-footer {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-glass);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.82em;
+            color: var(--text-muted);
+        }
+        
+        .btn-action {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-glass);
+            color: var(--text-main);
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+        }
+        
+        /* Toast Notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #1e293b;
+            color: #fff;
+            text-align: center;
+            border-radius: 10px;
+            padding: 12px 20px;
+            position: fixed;
+            z-index: 100;
+            right: 30px;
+            bottom: 30px;
+            border: 1px solid var(--primary-blue);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            font-size: 0.9em;
+        }
+        
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.3s, fadeout 0.3s 2.7s;
+        }
+        
+        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
+        
+        /* Responsive Breakpoints */
+        @media (max-width: 868px) {
+            .analytics-grid { grid-template-columns: 1fr; }
+            .metric-comparison { grid-template-columns: 1fr; }
+            .controls-bar { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Navbar Header -->
+        <div class="top-navbar">
+            <div class="brand">
+                <div class="brand-icon">⚡</div>
+                <div class="brand-text">
+                    <h1>Campaign Anomaly Intelligence Center</h1>
+                    <p>Real-Time Severity Scoring, Root Cause Narrative & Smart Alert Routing</p>
+                </div>
+            </div>
+            <div class="system-status">
+                <div class="status-dot"></div>
+                Monitoring Active
+            </div>
+        </div>
+        
+        <!-- Analytics & KPI Charts Grid -->
+        <div class="analytics-grid">
+            <div class="chart-card">
+                <h3>📊 Anomaly Distribution by Category</h3>
+                <div style="height: 180px; position: relative;">
+                    <canvas id="typeChart"></canvas>
+                </div>
+            </div>
+            <div class="kpi-column">
+                <div class="kpi-mini-card">
+                    <div class="kpi-info">
+                        <h4>Immediate Pages</h4>
+                        <span class="val" style="color: #ef4444;" id="immediateCount">2</span>
+                    </div>
+                    <div class="kpi-badge" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">🚨</div>
+                </div>
+                <div class="kpi-mini-card">
+                    <div class="kpi-info">
+                        <h4>Daily Digest Stream</h4>
+                        <span class="val" style="color: #38bdf8;" id="digestCount">3</span>
+                    </div>
+                    <div class="kpi-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">📬</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Interactive Controls Bar -->
+        <div class="controls-bar">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search campaign (e.g. CMP-001), metric, or keyword..." onkeyup="filterAlerts()">
+            </div>
+            <div class="filter-pills">
+                <button class="pill active" onclick="setFilter('all', this)">All Alerts</button>
+                <button class="pill" onclick="setFilter('immediate', this)">🚨 Immediate Pages</button>
+                <button class="pill" onclick="setFilter('digest', this)">📬 Daily Digest</button>
+                <button class="pill" onclick="setFilter('seasonal', this)">📈 Seasonal Shifts</button>
+            </div>
+        </div>
+        
+        <!-- Anomaly Cards Container -->
+        <div class="cards-list" id="cardsContainer">
+            <!-- Cards rendered dynamically via JavaScript -->
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast">JSON Payload copied to clipboard!</div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        const alertData = [
+  {
+    "campaign": "CMP-001",
+    "date": "2026-03-01",
+    "type": "tracking_break",
+    "type_label": "Broken Conversion Tracking",
+    "severity": "HIGH",
+    "severity_score": 0.5,
+    "route": "immediate",
+    "metric": "conversions",
+    "metric_label": "Conversions",
+    "actual": 0.0,
+    "actual_formatted": "0",
+    "expected": 15.2,
+    "expected_formatted": "15.2",
+    "delta_pct": -100.0,
+    "baseline": "28-Day Historical Baseline (Day-of-Week Adjusted)",
+    "explanation": "Conversions dropped sharply to 0 (expected ~15.2, -100.0%) against the 28-Day Historical Baseline (Day-of-Week Adjusted), despite clicks and spend remaining normal. This strongly indicates a broken conversion tag or tracking snippet failure.",
+    "first_step": "Inspect the conversion tracking pixel on the landing page; test a test conversion in Tag Manager / Preview Mode to ensure event firing."
+  },
+  {
+    "campaign": "CMP-004",
+    "date": "2026-03-02",
+    "type": "budget_exhausted",
+    "type_label": "Early Budget Depletion",
+    "severity": "HIGH",
+    "severity_score": 0.3375,
+    "route": "immediate",
+    "metric": "spend",
+    "metric_label": "Ad Spend ($)",
+    "actual": 450.0,
+    "actual_formatted": "$450.00",
+    "expected": 1200.0,
+    "expected_formatted": "$1,200.00",
+    "delta_pct": -62.5,
+    "baseline": "28-Day Historical Baseline (Day-of-Week Adjusted)",
+    "explanation": "Ad Spend ($) dropped to $450.00 (expected ~$1,200.00, -62.5%) compared to the 28-Day Historical Baseline (Day-of-Week Adjusted), while audience search demand remained high. This suggests the daily campaign budget cap was exhausted prematurely.",
+    "first_step": "Review daily campaign spend caps, budget pacing settings, and active ad delivery schedule."
+  },
+  {
+    "campaign": "CMP-007",
+    "date": "2026-03-03",
+    "type": "bid_strategy_change",
+    "type_label": "Bidding Strategy Shift",
+    "severity": "LOW",
+    "severity_score": 0.1464,
+    "route": "digest",
+    "metric": "cpa",
+    "metric_label": "Cost Per Acquisition (CPA)",
+    "actual": 45.0,
+    "actual_formatted": "$45.00",
+    "expected": 22.0,
+    "expected_formatted": "$22.00",
+    "delta_pct": 104.5,
+    "baseline": "28-Day Historical Baseline (Day-of-Week Adjusted)",
+    "explanation": "Cost Per Acquisition (CPA) shifted to $45.00 compared to expected ~$22.00 (+104.5%) following a detected bidding strategy or target CPA/ROAS adjustment against the 28-Day Historical Baseline (Day-of-Week Adjusted).",
+    "first_step": "Check campaign change history in your ad manager to confirm recent target CPA/ROAS or bidding strategy modifications."
+  },
+  {
+    "campaign": "CMP-010",
+    "date": "2026-03-04",
+    "type": "seasonal_shift",
+    "type_label": "Market Seasonal Pattern",
+    "severity": "LOW",
+    "severity_score": 0.0407,
+    "route": "digest",
+    "metric": "clicks",
+    "metric_label": "Total Clicks",
+    "actual": 820.0,
+    "actual_formatted": "820",
+    "expected": 1100.0,
+    "expected_formatted": "1,100",
+    "delta_pct": -25.5,
+    "baseline": "28-Day Historical Baseline (Day-of-Week Adjusted)",
+    "explanation": "Total Clicks moved to 820 (expected ~1,100, -25.5%), matching broader category-wide peer movement over the 28-Day Historical Baseline (Day-of-Week Adjusted). Classified as expected seasonal market variance.",
+    "first_step": "Cross-reference category benchmarks, holiday promotional schedules, and peer campaign trends."
+  },
+  {
+    "campaign": "CMP-012",
+    "date": "2026-03-05",
+    "type": "other_anomaly",
+    "type_label": "Unusual Metric Variance",
+    "severity": "LOW",
+    "severity_score": 0.0591,
+    "route": "digest",
+    "metric": "ctr",
+    "metric_label": "Click-Through Rate (CTR)",
+    "actual": 0.012,
+    "actual_formatted": "1.20%",
+    "expected": 0.035,
+    "expected_formatted": "3.50%",
+    "delta_pct": -65.7,
+    "baseline": "28-Day Historical Baseline (Day-of-Week Adjusted)",
+    "explanation": "Click-Through Rate (CTR) recorded 1.20% vs expected ~3.50% (-65.7%), deviating noticeably beyond the normal variance band for the 28-Day Historical Baseline (Day-of-Week Adjusted).",
+    "first_step": "Analyze recent search query reports, ad group level bid edits, and target audience overlap."
+  }
+];
+        let currentFilter = 'all';
+
+        function renderAlertCards(items) {
+            const container = document.getElementById('cardsContainer');
+            container.innerHTML = '';
+            
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--text-muted); background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-glass);">
+                        🔍 No anomaly records matched your search query or active filter.
+                    </div>
+                `;
+                return;
+            }
+
+            items.forEach((item, index) => {
+                const isImmediate = item.route === 'immediate';
+                const routeTagClass = isImmediate ? 'tag-immediate' : 'tag-digest';
+                const routeLabel = isImmediate ? '🚨 Immediate Page' : '📬 Daily Digest';
+                const sevClass = 'tag-severity-' + item.severity.toLowerCase();
+                const deltaClass = item.delta_pct < 0 ? 'val-delta-neg' : 'val-delta-pos';
+                const deltaSymbol = item.delta_pct < 0 ? '↓' : '↑';
+
+                const cardHTML = `
+                    <div class="alert-card route-${item.route}" data-campaign="${item.campaign.toLowerCase()}" data-type="${item.type}" data-route="${item.route}" data-text="${(item.explanation + ' ' + item.metric_label + ' ' + item.campaign).toLowerCase()}">
+                        <div class="card-top">
+                            <div class="campaign-meta">
+                                <span class="campaign-badge">${item.campaign}</span>
+                                <span class="metric-title">${item.metric_label}</span>
+                            </div>
+                            <div class="badges-group">
+                                <span class="tag-badge ${sevClass}">${item.severity} Priority</span>
+                                <span class="tag-badge ${routeTagClass}">${routeLabel}</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-comparison">
+                            <div class="comp-box">
+                                <span class="lbl">Observed Value</span>
+                                <span class="val val-observed">${item.actual_formatted}</span>
+                            </div>
+                            <div class="comp-box">
+                                <span class="lbl">Baseline Expected</span>
+                                <span class="val val-expected">${item.expected_formatted}</span>
+                            </div>
+                            <div class="comp-box">
+                                <span class="lbl">Deviation Magnitude</span>
+                                <span class="val ${deltaClass}">${deltaSymbol} ${item.delta_pct > 0 ? '+' : ''}${item.delta_pct.toFixed(1)}%</span>
+                            </div>
+                        </div>
+
+                        <div class="narrative-box">
+                            <strong>Anomaly Root Cause:</strong> ${item.explanation}
+                        </div>
+
+                        <div class="action-card">
+                            <span class="action-icon">🛠️</span>
+                            <div>
+                                <strong>Recommended Action Plan:</strong>
+                                <div>${item.first_step}</div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <span>📅 Event Date: <strong>${item.date}</strong> &bull; Baseline: <strong>${item.baseline}</strong></span>
+                            <button class="btn-action" onclick="copyJSON(${index})">📋 Copy Alert JSON</button>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+        }
+
+        function setFilter(filterType, element) {
+            currentFilter = filterType;
+            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active', 'active-immediate'));
+            if (filterType === 'immediate') {
+                element.classList.add('active-immediate');
+            } else {
+                element.classList.add('active');
+            }
+            filterAlerts();
+        }
+
+        function filterAlerts() {
+            const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
+            const filtered = alertData.filter(item => {
+                const matchesSearch = item.campaign.toLowerCase().includes(searchVal) ||
+                                      item.metric_label.toLowerCase().includes(searchVal) ||
+                                      item.explanation.toLowerCase().includes(searchVal) ||
+                                      item.type.toLowerCase().includes(searchVal);
+                
+                let matchesFilter = true;
+                if (currentFilter === 'immediate') matchesFilter = (item.route === 'immediate');
+                if (currentFilter === 'digest') matchesFilter = (item.route === 'digest');
+                if (currentFilter === 'seasonal') matchesFilter = (item.type === 'seasonal_shift');
+
+                return matchesSearch && matchesFilter;
+            });
+
+            renderAlertCards(filtered);
+        }
+
+        function copyJSON(index) {
+            const payload = alertData[index];
+            navigator.clipboard.writeText(JSON.stringify(payload, null, 2)).then(() => {
+                showToast("Copied alert JSON for " + payload.campaign + " to clipboard!");
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.className = "show";
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('typeChart').getContext('2d');
+            const counts = {};
+            alertData.forEach(item => {
+                counts[item.type_label] = (counts[item.type_label] || 0) + 1;
+            });
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(counts),
+                    datasets: [{
+                        data: Object.values(counts),
+                        backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6', '#38bdf8', '#10b981'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: { color: '#cbd5e1', font: { family: 'Plus Jakarta Sans', size: 11 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAlertCards(alertData);
+            initChart();
+        });
+    </script>
+</body>
+</html>
