@@ -1623,18 +1623,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     const step = document.getElementById('drawer-step');
 
     if (badge) {
-      badge.textContent = alert.severity + ' SEVERITY · ' + alert.routing.replace(/_/g, ' ');
-      badge.className = 'drawer-badge severity-' + alert.severity.toLowerCase();
+      const routingLabel = (alert.routing || 'IMMEDIATE_PAGE').replace(/_/g, ' ');
+      const sev = (alert.severity || 'HIGH').toUpperCase();
+      badge.innerHTML = `<span class="badge-pulse-dot"></span><span class="badge-text">${sev} SEVERITY · ${routingLabel}</span>`;
+      badge.className = 'drawer-badge severity-' + sev.toLowerCase();
     }
-    if (title) title.textContent = alert.campaign + ': ' + alert.anomalyType.replace(/_/g, ' ');
-    if (actual) actual.textContent = alert.actual;
-    if (expected) expected.textContent = alert.expected;
+    if (title) {
+      const typeLabel = (alert.anomalyType || 'ANOMALY').replace(/_/g, ' ');
+      title.textContent = `${alert.campaign}: ${typeLabel}`;
+    }
+    if (actual) {
+      actual.textContent = typeof alert.actual === 'number' ? (alert.actual % 1 === 0 ? alert.actual : alert.actual.toFixed(1)) : alert.actual;
+    }
+    if (expected) {
+      expected.textContent = typeof alert.expected === 'number' ? (alert.expected % 1 === 0 ? alert.expected : alert.expected.toFixed(1)) : alert.expected;
+    }
     if (delta) {
-      delta.textContent = (alert.pctDelta > 0 ? '+' : '') + alert.pctDelta + '%';
-      delta.className = 'stat-number ' + (alert.pctDelta < 0 ? 'text-red' : 'text-green');
+      const d = parseFloat(alert.pctDelta);
+      const isPositive = d > 0;
+      delta.textContent = (isPositive ? '+' : '') + (isNaN(d) ? alert.pctDelta : (d % 1 === 0 ? d : d.toFixed(1))) + '%';
+      if (d === 0) {
+        delta.className = 'stat-number text-amber';
+      } else if (d < 0) {
+        delta.className = 'stat-number text-red';
+      } else {
+        delta.className = 'stat-number text-green';
+      }
     }
-    if (exp) exp.textContent = alert.explanation;
-    if (step) step.textContent = alert.playbook;
+    if (exp) exp.textContent = alert.explanation || 'No cause analysis available for this alert.';
+    if (step) step.textContent = alert.playbook || 'Verify tag container snippet and server response.';
 
     if (overlay) overlay.classList.add('active');
   }
