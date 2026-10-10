@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "routes": [
+    {
+      "src": "/PS-04_campaign_anomaly_alerting/(.*)",
+      "dest": "/PS-04_campaign_anomaly_alerting/$1"
+    },
+    {
+      "src": "/M4/(.*)",
+      "dest": "/M4/$1"
+    },
+    {
+      "src": "/styles.css",
+      "dest": "/M4/web_ui/styles.css"
+    },
+    {
+      "src": "/app.js",
+      "dest": "/M4/web_ui/app.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/M4/web_ui/$1"
+    }
+  ]
+}

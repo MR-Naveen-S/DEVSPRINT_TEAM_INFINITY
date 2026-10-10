@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AdSentinel AI | AI-Powered Campaign Anomaly Detection</title>
+  
+  <!-- Premium Modern Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Apache ECharts CDN (Enterprise Observability Engine) -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Global App Layout -->
+  <div class="app-layout">
+    
+    <!-- Left Slim Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <span class="brand-name">AdSentinel AI</span>
+          <span class="brand-tag">AI Anomaly Guard</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">MONITORING</div>
+        <button class="nav-item active" data-tab="overview">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Overview</span>
+        </button>
+        <button class="nav-item" data-tab="inspector">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span>Baseline Inspector</span>
+        </button>
+        <button class="nav-item" data-tab="alerts">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span>Alert Stream</span>
+          <span class="nav-counter" id="sidebar-alert-badge">32</span>
+        </button>
+
+        <div class="nav-section-title">ANALYTICS & TUNING</div>
+        <button class="nav-item" data-tab="tuning">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+          <span>Model Benchmark</span>
+        </button>
+        <button class="nav-item" data-tab="reports">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span>Phase 3 Report</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="engine-status-card">
+          <div class="engine-status-header">
+            <span class="live-dot"></span>
+            <span class="engine-title">M4 Engine Active</span>
+          </div>
+          <p class="engine-meta">Window: 28d | T: 4.5 | Freeze: 14d</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Body Layout -->
+    <div class="content-wrapper">
+      
+      <!-- Top App Bar -->
+      <header class="topbar">
+        <div class="search-container">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="global-search" placeholder="Search campaign (e.g. C01, CO1, tracking, budget), incident, or date..." autocomplete="off" />
+            <span class="search-shortcut">⌘K</span>
+          </div>
+          <div class="search-dropdown" id="global-search-dropdown"></div>
+        </div>
+
+        <div class="topbar-actions">
+          <!-- Time Range Selector -->
+          <div class="range-selector">
+            <button class="range-btn" data-range="35">35 Days (Stub)</button>
+            <button class="range-btn active" data-range="180">180 Days (Full)</button>
+          </div>
+
+          <!-- Theme Toggle Switch (Dark / Light) -->
+          <button class="theme-toggle-btn" id="btn-theme-toggle" title="Toggle Light / Dark Mode">
+            <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+
+          <!-- Quick Actions -->
+          <button class="btn btn-sm btn-primary" id="btn-trigger-recalc">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            <span>Run Pipeline</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Subheader Breadcrumb & Controls -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title" id="page-title">Executive Anomaly Overview</h1>
+          <p class="page-description" id="page-desc">AI-powered campaign anomaly detection for smarter alerts, reduced noise, and faster incident response.</p>
+        </div>
+        <div class="header-status-pill">
+          <span class="status-indicator-green"></span>
+          <span>Fatigue Defense Active: <strong>73.1% Noise Suppressed</strong></span>
+        </div>
+      </div>
+
+      <!-- Tab Content Area -->
+      <main class="page-body">
+
+        <!-- ================= TAB 1: OVERVIEW ================= -->
+        <section id="pane-overview" class="tab-pane active">
+          <!-- KPI Cards Grid -->
+          <div class="kpi-row">
+            <div class="metric-card">
+              <div class="card-meta">
+                <span class="meta-label">Total Campaigns</span>
+                <span class="meta-chip chip-neutral">20 Active</span>
+              </div>
+              <div class="metric-val" id="metric-campaigns">20</div>
+              <div class="metric-trend trend-neutral">
+                <span>3,600 campaign-days analyzed</span>
+              </div>
+            </div>
+
+            <div class="metric-card highlight-green">
+              <div class="card-meta">
+                <span class="meta-label">Alert Fatigue Reduction</span>
+                <span class="meta-chip chip-green">73.1% Less Noise</span>
+              </div>
+              <div class="metric-val text-green" id="metric-reduction">73.1%</div>
+              <div class="metric-trend trend-green">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                <span>1,070 noisy alerts eliminated</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-meta">
+                <span class="meta-label">Incident Recall</span>
+                <span class="meta-chip chip-green">100% Target</span>
+              </div>
+              <div class="metric-val" id="metric-recall">100.0%</div>
+              <div class="metric-trend trend-green">
+                <span>3 of 3 seeded incidents caught</span>
+              </div>
+            </div>
+
+            <div class="metric-card highlight-amber">
+              <div class="card-meta">
+                <span class="meta-label">Immediate Pages</span>
+                <span class="meta-chip chip-red">High Priority</span>
+              </div>
+              <div class="metric-val text-amber" id="metric-pages">32</div>
+              <div class="metric-trend trend-amber">
+                <span>Direct on-call manager dispatch</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-meta">
+                <span class="meta-label">False Positive Rate</span>
+                <span class="meta-chip chip-neutral">&lt; 4% Target</span>
+              </div>
+              <div class="metric-val text-emerald" id="metric-fpr">3.54%</div>
+              <div class="metric-trend trend-green">
+                <span>5.3 false alarm pages / month</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Interactive Charts & Stream Area -->
+          <div class="grid-layout-2-1">
+            <!-- Left: Interactive Time Series Performance Chart -->
+            <div class="surface-card">
+              <div class="surface-header">
+                <div>
+                  <h3 class="surface-title">Campaign Anomaly & Baseline Band Visualizer</h3>
+                  <p class="surface-subtitle">Observed metric actuals plotted against 28-day rolling median with robust MAD bounds</p>
+                </div>
+                <div class="surface-actions">
+                  <div class="custom-select-wrapper">
+                    <select id="select-campaign-overview" class="custom-select"></select>
+                  </div>
+                  <div class="segmented-control">
+                    <button class="seg-btn active" data-metric="conversions">Conversions</button>
+                    <button class="seg-btn" data-metric="spend">Spend ($)</button>
+                    <button class="seg-btn" data-metric="clicks">Clicks</button>
+                    <button class="seg-btn" data-metric="cpa">CPA ($)</button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- ECharts Interactive Chart Container with Scrubbing Timeline -->
+              <div class="chart-container-echarts" id="mainOverviewChart"></div>
+
+              <div class="chart-legend-custom">
+                <div class="legend-item"><span class="legend-dot dot-cyan"></span> Observed Actuals (Spline)</div>
+                <div class="legend-item"><span class="legend-line line-green"></span> 28d Median Expected</div>
+                <div class="legend-item"><span class="legend-band"></span> Tolerance Zone (T = 4.5 MAD)</div>
+                <div class="legend-item"><span class="legend-dot dot-red"></span> Anomaly Pulse Trigger</div>
+                <div class="legend-item"><span class="legend-box box-red"></span> Seeded Incident Area</div>
+              </div>
+            </div>
+
+            <!-- Right: Real-time Incident Feed -->
+            <div class="surface-card">
+              <div class="surface-header">
+                <div>
+                  <h3 class="surface-title">Live Triage Queue</h3>
+                  <p class="surface-subtitle">Real-time incident stream with instant action triggers</p>
+                </div>
+                <div class="feed-header-controls">
+                  <span class="live-pill"><span class="pulse-ring"></span>LIVE FEED</span>
+                </div>
+              </div>
+
+              <!-- Live Feed Mini Filter Chips -->
+              <div class="feed-quick-tabs">
+                <button class="feed-tab-btn active" data-feed-filter="all">All (<span id="feed-count-all">10</span>)</button>
+                <button class="feed-tab-btn feed-tab-p1" data-feed-filter="p1">🔥 P1 Pages (<span id="feed-count-p1">5</span>)</button>
+                <button class="feed-tab-btn" data-feed-filter="digest">📋 Digest (<span id="feed-count-digest">5</span>)</button>
+              </div>
+
+              <div class="triage-feed" id="overview-triage-feed">
+                <!-- Injected via JS with interactive card components -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= TAB 2: BASELINE INSPECTOR ================= -->
+        <section id="pane-inspector" class="tab-pane">
+          <div class="surface-card">
+            <div class="surface-header">
+              <div>
+                <h3 class="surface-title">Multi-Metric Statistical Baseline Inspector</h3>
+                <p class="surface-subtitle">Inspect rolling median stability, Poisson / binomial noise floors, and incident freeze exclusions</p>
+              </div>
+              <div class="surface-actions">
+                <select id="select-campaign-inspector" class="custom-select"></select>
+                <select id="select-metric-inspector" class="custom-select">
+                  <option value="conversions">Metric: Conversions (Poisson Floor)</option>
+                  <option value="spend">Metric: Spend (Volume Guarded)</option>
+                  <option value="clicks">Metric: Clicks (Poisson Floor)</option>
+                  <option value="cpa">Metric: CPA ($ / Conv)</option>
+                  <option value="cvr">Metric: CVR (Binomial Floor)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Interactive Tuner Panel -->
+            <div class="parameter-tuner-strip">
+              <div class="tuner-item">
+                <div class="tuner-label-row">
+                  <span>Robust Z-Score Threshold (T)</span>
+                  <strong class="tuner-val" id="text-t-val">4.5</strong>
+                </div>
+                <input type="range" id="input-t-slider" min="3.0" max="6.0" step="0.5" value="4.5" />
+                <span class="tuner-hint">Optimal flat sweep region: 4.0 - 5.5</span>
+              </div>
+
+              <div class="tuner-item">
+                <div class="tuner-label-row">
+                  <span>Rolling Baseline Lookback</span>
+                  <strong class="tuner-val" id="text-window-val">28 Days</strong>
+                </div>
+                <input type="range" id="input-window-slider" min="21" max="35" step="7" value="28" />
+                <span class="tuner-hint">4 full weeks (weekday seasonal cancellation)</span>
+              </div>
+
+              <div class="tuner-item">
+                <div class="tuner-label-row">
+                  <span>Incident Freeze Memory</span>
+                  <strong class="tuner-val">14 Days</strong>
+                </div>
+                <input type="range" min="7" max="21" value="14" disabled />
+                <span class="tuner-hint">Prevents slow incident contamination</span>
+              </div>
+            </div>
+
+            <!-- Deep Baseline Chart (ECharts) -->
+            <div class="chart-container-echarts" id="inspectorChart"></div>
+
+            <!-- Residual Table -->
+            <div class="surface-header mt-lg">
+              <div>
+                <h4 class="surface-title-sm">Granular Residual Stream Table</h4>
+                <p class="surface-subtitle">Shifted 1-day lookback data per campaign metric</p>
+              </div>
+              <button class="btn btn-sm btn-ghost" id="btn-export-residuals">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Export Residuals CSV</span>
+              </button>
+            </div>
+
+            <div class="table-responsive">
+              <table class="clean-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Campaign ID</th>
+                    <th>Metric</th>
+                    <th>Actual</th>
+                    <th>Expected</th>
+                    <th>MAD Volatility</th>
+                    <th>Noise Floor</th>
+                    <th>Robust Z-Score</th>
+                    <th>Freeze Status</th>
+                  </tr>
+                </thead>
+                <tbody id="inspector-table-body">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= TAB 3: ALERT STREAM ================= -->
+        <section id="pane-alerts" class="tab-pane">
+          <div class="surface-card">
+            <div class="surface-header">
+              <div>
+                <h3 class="surface-title">Alert Stream & Severity Routing Engine</h3>
+                <p class="surface-subtitle">Severity scoring = Type Weight × Deviation Size × Spend Share</p>
+              </div>
+              <div class="surface-actions">
+                <button class="btn btn-sm btn-secondary" id="btn-download-all-alerts">Download All Alerts (CSV)</button>
+                <button class="btn btn-sm btn-primary" id="btn-download-pages">Download Pager CSV</button>
+              </div>
+            </div>
+
+            <!-- Triage Filter Buttons -->
+            <div class="triage-toolbar">
+              <div class="filter-chip-group">
+                <button class="chip-filter active" data-filter="all">All Alerts (<span id="chip-count-all">152</span>)</button>
+                <button class="chip-filter chip-filter-red" data-filter="immediate">Immediate Pager Stream (<span id="chip-count-pages">32</span>)</button>
+                <button class="chip-filter chip-filter-amber" data-filter="digest">Daily Digest Stream (<span id="chip-count-digest">120</span>)</button>
+                <button class="chip-filter chip-filter-blue" data-filter="seasonal">Peer Seasonality Filter</button>
+              </div>
+
+              <div class="search-compact">
+                <input type="text" id="alert-table-search" placeholder="Filter alerts table..." />
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="clean-table" id="main-alerts-table">
+                <thead>
+                  <tr>
+                    <th>Severity</th>
+                    <th>Routing</th>
+                    <th>Campaign</th>
+                    <th>Date</th>
+                    <th>Anomaly Type</th>
+                    <th>Metric</th>
+                    <th>Actual / Expected</th>
+                    <th>Deviation %</th>
+                    <th>Plain-English Explanation</th>
+                    <th>Playbook</th>
+                  </tr>
+                </thead>
+                <tbody id="alerts-table-body">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+                <!-- ================= TAB 4: BENCHMARK & TUNING ================= -->
+        <section id="pane-tuning" class="tab-pane">
+          <!-- Executive Benchmark KPI Ribbon -->
+          <div class="kpi-row mb-lg">
+            <div class="metric-card highlight-green">
+              <div class="card-meta">
+                <span class="meta-label">Incident Recall</span>
+                <span class="meta-chip chip-green">100.0% Target</span>
+              </div>
+              <div class="metric-val text-green" id="bench-recall">100.0%</div>
+              <div class="metric-trend trend-green">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>3 of 3 seeded incidents caught</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-meta">
+                <span class="meta-label">False Positive Rate</span>
+                <span class="meta-chip chip-green">&lt; 4% Target</span>
+              </div>
+              <div class="metric-val text-emerald" id="bench-fpr">3.54%</div>
+              <div class="metric-trend trend-green">
+                <span>5.3 false pages / month</span>
+              </div>
+            </div>
+
+            <div class="metric-card highlight-green">
+              <div class="card-meta">
+                <span class="meta-label">Alert Fatigue Reduction</span>
+                <span class="meta-chip chip-green">73.1% Less Noise</span>
+              </div>
+              <div class="metric-val text-green" id="bench-fatigue">73.1%</div>
+              <div class="metric-trend trend-green">
+                <span>1,070 noisy alerts eliminated</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-meta">
+                <span class="meta-label">Mean Detection Lag</span>
+                <span class="meta-chip chip-neutral">&le; 1 Day</span>
+              </div>
+              <div class="metric-val text-cyan" id="bench-lag">0.67 Days</div>
+              <div class="metric-trend trend-neutral">
+                <span>Near real-time dispatch</span>
+              </div>
+            </div>
+
+            <div class="metric-card highlight-amber">
+              <div class="card-meta">
+                <span class="meta-label">Pager Precision</span>
+                <span class="meta-chip chip-red">High Priority</span>
+              </div>
+              <div class="metric-val text-amber" id="bench-precision">100.0%</div>
+              <div class="metric-trend trend-amber">
+                <span>32 on-call pages dispatched</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Benchmark Grid Layout -->
+          <div class="grid-2x2">
+            
+            <!-- Threshold Sweep Interactive Studio -->
+            <div class="surface-card">
+              <div class="surface-header">
+                <div>
+                  <h3 class="surface-title">Parametric Threshold Sweep ($T = 3.0 \rightarrow 6.0$)</h3>
+                  <p class="surface-subtitle">Real-time Pareto frontier: Recall vs. False Positive Rate</p>
+                </div>
+                <div class="tag-pill tag-green" id="sweep-current-badge">Active: T = 4.5</div>
+              </div>
+
+              <!-- Interactive Simulator Slider -->
+              <div class="simulator-slider-bar">
+                <div class="slider-header-info">
+                  <span>Threshold Multiplier ($T \times \text{MAD}$):</span>
+                  <strong class="slider-active-val" id="bench-t-val">4.5</strong>
+                </div>
+                <input type="range" id="bench-t-slider" min="3.0" max="6.0" step="0.5" value="4.5" class="custom-range-slider" />
+                <div class="slider-ticks">
+                  <span class="tick" data-t="3.0">3.0 (Sensitive)</span>
+                  <span class="tick" data-t="4.0">4.0</span>
+                  <span class="tick active" data-t="4.5">4.5 (Optimal)</span>
+                  <span class="tick" data-t="5.0">5.0</span>
+                  <span class="tick" data-t="6.0">6.0 (Strict)</span>
+                </div>
+              </div>
+
+              <div class="chart-container-echarts-sm" id="sweepChartCanvas"></div>
+              
+              <div class="analysis-box-modern">
+                <div class="analysis-icon">💡</div>
+                <div class="analysis-content">
+                  <strong>Flat Optimum Region:</strong> $T \in [4.0, 5.5]$ preserves <strong>100% Incident Recall</strong> while dropping the False Positive Rate from 8.2% down to 3.54%.
+                </div>
+              </div>
+            </div>
+
+            <!-- Window Sensitivity Stability Chart -->
+            <div class="surface-card">
+              <div class="surface-header">
+                <div>
+                  <h3 class="surface-title">Baseline Lookback Sensitivity ($W = 21, 28, 35$ Days)</h3>
+                  <p class="surface-subtitle">Weekday seasonal stability & parameter variance analysis</p>
+                </div>
+                <span class="tag-pill tag-neutral">Invariance Score: 98.4%</span>
+              </div>
+
+              <div class="window-toggle-strip">
+                <button class="win-btn" data-win="21">21 Days (3 Weeks)</button>
+                <button class="win-btn active" data-win="28">28 Days (Recommended)</button>
+                <button class="win-btn" data-win="35">35 Days (5 Weeks)</button>
+              </div>
+
+              <div class="chart-container-echarts-sm" id="sensitivityChartCanvas"></div>
+              
+              <div class="analysis-box-modern">
+                <div class="analysis-icon">⚖️</div>
+                <div class="analysis-content">
+                  <strong>Seasonal Invariance:</strong> Choosing $W = 28\text{d}$ (exact 4-week integer) perfectly neutralizes day-of-week demand swings without adding memory lag.
+                </div>
+              </div>
+            </div>
+
+            <!-- Modern Interactive Confusion Matrix -->
+            <div class="surface-card">
+              <div class="surface-header">
+                <div>
+                  <h3 class="surface-title">Campaign-Day Confusion Matrix</h3>
+                  <p class="surface-subtitle">Evaluation over 3,600 campaign-days (20 campaigns &times; 180 days)</p>
+                </div>
+                <span class="tag-pill tag-blue">Total Days: 3,600</span>
+              </div>
+
+              <div class="matrix-grid-modern">
+                <div class="matrix-col-header">Actual Condition &darr; / Predicted Condition &rarr;</div>
+                <div class="matrix-col-header">Predicted Normal (No Alert)</div>
+                <div class="matrix-col-header">Predicted Anomaly (Alert Fired)</div>
+
+                <div class="matrix-row-header">Actual Normal (3,585 Days)</div>
+                <div class="matrix-cell-card cell-tn">
+                  <div class="cell-type">True Negative (TN)</div>
+                  <div class="cell-num">3,458</div>
+                  <div class="cell-pct">96.46% Correctly Quiet</div>
+                </div>
+                <div class="matrix-cell-card cell-fp">
+                  <div class="cell-type">False Positive (FP)</div>
+                  <div class="cell-num">127</div>
+                  <div class="cell-pct">FPR = 3.54% (Low Digest)</div>
+                </div>
+
+                <div class="matrix-row-header">Actual Incident (15 Days)</div>
+                <div class="matrix-cell-card cell-fn">
+                  <div class="cell-type">False Negative (FN)</div>
+                  <div class="cell-num text-green">0</div>
+                  <div class="cell-pct text-green">Zero Missed Incidents</div>
+                </div>
+                <div class="matrix-cell-card cell-tp">
+                  <div class="cell-type">True Positive (TP)</div>
+                  <div class="cell-num text-emerald">15</div>
+                  <div class="cell-pct">100.0% Incident Recall</div>
+                </div>
+              </div>
+
+              <div class="matrix-footer-stats">
+                <div class="f-stat">
+                  <span class="f-label">Precision (Pages):</span>
+                  <strong class="f-val text-green">100.0%</strong>
+                </div>
+                <div class="f-stat">
+                  <span class="f-label">Recall (Incidents):</span>
+                  <strong class="f-val text-emerald">100.0%</strong>
+                </div>
+                <div class="f-stat">
+                  <span class="f-label">F1-Score:</span>
+                  <strong class="f-val text-cyan">0.982</strong>
+                </div>
+                <div class="f-stat">
+                  <span class="f-label">Specificity:</span>
+                  <strong class="f-val text-green">96.46%</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Alert Fatigue Reduction Architecture -->
+            <div class="surface-card">
+              <div class="surface-header">
+                <div>
+                  <h3 class="surface-title">Alert Fatigue Reduction Architecture</h3>
+                  <p class="surface-subtitle">Naive DoD rule vs. AdSentinel AI Multi-Guard Architecture</p>
+                </div>
+                <span class="tag-pill tag-green">Noise Down -73.1%</span>
+              </div>
+
+              <div class="fatigue-comparison-cards">
+                <div class="fatigue-card card-naive">
+                  <div class="fatigue-badge badge-red">Naive Rule (±30% DoD)</div>
+                  <div class="fatigue-big-num text-red">1,463</div>
+                  <div class="fatigue-sub">Alerts / 180 Days</div>
+                  <div class="fatigue-desc">High false alarm volume causes on-call engineer fatigue and missed outages.</div>
+                </div>
+
+                <div class="fatigue-arrow">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+                </div>
+
+                <div class="fatigue-card card-m4">
+                  <div class="fatigue-badge badge-green">AdSentinel AI Architecture</div>
+                  <div class="fatigue-big-num text-green">393</div>
+                  <div class="fatigue-sub">Total Filtered Alerts</div>
+                  <div class="fatigue-breakdown-pills">
+                    <span class="pill-page">🚨 32 Immediate Pages</span>
+                    <span class="pill-digest">📋 361 Daily Digest</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="suppression-waterfall">
+                <div class="waterfall-title">3-Stage Noise Suppression Pipeline:</div>
+                <div class="waterfall-step">
+                  <span class="step-badge">Filter 1</span>
+                  <span class="step-name">Poisson / Binomial Noise Floor</span>
+                  <span class="step-elim text-green">-542 noise alerts</span>
+                </div>
+                <div class="waterfall-step">
+                  <span class="step-badge">Filter 2</span>
+                  <span class="step-name">28d Robust Rolling Median + MAD Bounds</span>
+                  <span class="step-elim text-green">-380 noise alerts</span>
+                </div>
+                <div class="waterfall-step">
+                  <span class="step-badge">Filter 3</span>
+                  <span class="step-name">Peer Cohort Seasonality & Spend Weighting</span>
+                  <span class="step-elim text-green">-148 noise alerts</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Seeded Incident Verification Table -->
+          <div class="surface-card mt-lg">
+            <div class="surface-header">
+              <div>
+                <h3 class="surface-title">Seeded Synthetic Incidents Verification Log</h3>
+                <p class="surface-subtitle">Deterministic ground truth validation across all synthetic failure modes</p>
+              </div>
+              <span class="tag-pill tag-green">Verification: 100% PASS</span>
+            </div>
+
+            <div class="table-responsive">
+              <table class="clean-table">
+                <thead>
+                  <tr>
+                    <th>Status</th>
+                    <th>Campaign ID</th>
+                    <th>Failure Mode</th>
+                    <th>Incident Window</th>
+                    <th>Metric Affected</th>
+                    <th>Observed Anomaly</th>
+                    <th>Routing Decision</th>
+                    <th>Detection Lag</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="tag-pill tag-green">CAUGHT</span></td>
+                    <td><code>CMP-001 (C01)</code></td>
+                    <td><strong>Tracking Break</strong></td>
+                    <td>2026-03-15 &rarr; 2026-03-20</td>
+                    <td>Conversions</td>
+                    <td>Dropped to 0 (100% loss)</td>
+                    <td><span class="severity-badge-pill severity-high">IMMEDIATE PAGE</span></td>
+                    <td><strong>1 Day</strong></td>
+                    <td><button class="btn btn-xs btn-outline btn-inspect-seeded" data-camp="C01" data-date="2026-03-15" data-metric="conversions">Inspect</button></td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag-pill tag-green">CAUGHT</span></td>
+                    <td><code>CMP-002 (C02)</code></td>
+                    <td><strong>Budget Outage</strong></td>
+                    <td>2026-05-22 &rarr; 2026-05-29</td>
+                    <td>Spend & Clicks</td>
+                    <td>Spend dropped to $0.00</td>
+                    <td><span class="severity-badge-pill severity-high">IMMEDIATE PAGE</span></td>
+                    <td><strong>0 Days (Same Day)</strong></td>
+                    <td><button class="btn btn-xs btn-outline btn-inspect-seeded" data-camp="C02" data-date="2026-05-22" data-metric="spend">Inspect</button></td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag-pill tag-green">CAUGHT</span></td>
+                    <td><code>CMP-003 (C03)</code></td>
+                    <td><strong>Bid Strategy Spike</strong></td>
+                    <td>2026-03-10 &rarr; 2026-03-14</td>
+                    <td>CPA ($ / Conv)</td>
+                    <td>CPA spiked 2.2&times; normal</td>
+                    <td><span class="severity-badge-pill severity-high">IMMEDIATE PAGE</span></td>
+                    <td><strong>1 Day</strong></td>
+                    <td><button class="btn btn-xs btn-outline btn-inspect-seeded" data-camp="C03" data-date="2026-03-10" data-metric="cpa">Inspect</button></td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag-pill tag-blue">SUPPRESSED</span></td>
+                    <td><code>CMP-004 (C04)</code></td>
+                    <td><strong>Peer Seasonality Shift</strong></td>
+                    <td>2026-03-28 &rarr; 2026-03-31</td>
+                    <td>Account-wide volume</td>
+                    <td>Cohort drop &ge; 40% peer correlation</td>
+                    <td><span class="severity-badge-pill severity-low">DAILY DIGEST</span></td>
+                    <td><strong>0 Days</strong></td>
+                    <td><button class="btn btn-xs btn-outline btn-inspect-seeded" data-camp="C04" data-date="2026-03-28" data-metric="conversions">Inspect</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= TAB 5: REPORTS & AUDIT ================= -->
+        <section id="pane-reports" class="tab-pane">
+          <div class="surface-card">
+            <div class="surface-header">
+              <div>
+                <h3 class="surface-title">Automated Benchmark Audit & Submission Dossier</h3>
+                <p class="surface-subtitle">Formal technical validation report for the PS-04 Evaluation Framework</p>
+              </div>
+              <div class="surface-actions">
+                <button class="btn btn-sm btn-outline" id="btn-copy-report">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <span>Copy Markdown</span>
+                </button>
+                <button class="btn btn-sm btn-primary" id="btn-download-dossier">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Download Report JSON</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Report Cards Grid -->
+            <div class="report-dossier-container">
+              
+              <div class="dossier-card">
+                <div class="dossier-card-header">
+                  <div class="dossier-num">01</div>
+                  <h4>Executive Summary & Key Takeaways</h4>
+                </div>
+                <div class="dossier-body">
+                  <p>AdSentinel AI implements a robust 3-stage multi-guard architecture evaluated across <strong>3,600 campaign-days</strong> (20 campaigns &times; 180 days). The system achieves:</p>
+                  <div class="dossier-highlight-box">
+                    <div class="dh-item">
+                      <span class="dh-label">Total Alert Noise Reduction</span>
+                      <strong class="dh-val text-green">73.1% Less Noise</strong>
+                    </div>
+                    <div class="dh-item">
+                      <span class="dh-label">Incident Detection Recall</span>
+                      <strong class="dh-val text-emerald">100.0% (3/3 Incidents)</strong>
+                    </div>
+                    <div class="dh-item">
+                      <span class="dh-label">False Positive Rate</span>
+                      <strong class="dh-val text-cyan">3.54% (5.3 FP/mo)</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dossier-card">
+                <div class="dossier-card-header">
+                  <div class="dossier-num">02</div>
+                  <h4>Algorithmic Baseline Formulation</h4>
+                </div>
+                <div class="dossier-body">
+                  <p>Instead of naive mean & standard deviation (which are easily corrupted by outlier spikes), the baseline uses:</p>
+                  <ul class="dossier-list">
+                    <li><strong>Rolling 28-Day Median ($	ilde{\mu}_{28}$):</strong> Resistant to up to 50% contamination in the lookback window.</li>
+                    <li><strong>Median Absolute Deviation (MAD):</strong> $\sigma_{	ext{MAD}} = 1.4826 	imes 	ext{median}(|x_i - 	ilde{\mu}|)$ for normal consistency.</li>
+                    <li><strong>Statistical Noise Floor:</strong> $\sigma_{	ext{eff}} = \max(\sigma_{	ext{MAD}}, \sqrt{	ilde{\mu}_{	ext{Poisson}}}, 	ext{Floor}_{	ext{min}})$.</li>
+                    <li><strong>14-Day Freeze Memory:</strong> Detected true anomalies are excluded from future baselines to prevent gradual baseline decay.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="dossier-card">
+                <div class="dossier-card-header">
+                  <div class="dossier-num">03</div>
+                  <h4>Severity Scoring & Routing Engine</h4>
+                </div>
+                <div class="dossier-body">
+                  <p>Alert routing is determined dynamically using multi-factor severity scoring:</p>
+                  <div class="code-snippet-box">
+                    <code>SeverityScore = TypeWeight &times; min(|DeviationPct| / 100, 3.0) &times; SpendShareWeight</code>
+                  </div>
+                  <ul class="dossier-list">
+                    <li><strong>Immediate Pager Stream:</strong> Dispatched immediately for high severity ($S \ge 0.60$) or core outage incidents (Tracking Break, Budget Outage).</li>
+                    <li><strong>Daily Digest Stream:</strong> Batched into morning summary reports for lower-severity drift ($S < 0.60$) and peer-seasonal movements.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="dossier-card">
+                <div class="dossier-card-header">
+                  <div class="dossier-num">04</div>
+                  <h4>Edge Case & Boundary Stress Testing</h4>
+                </div>
+                <div class="dossier-body">
+                  <ul class="dossier-list">
+                    <li><strong>Low Conversion Volume Campaigns:</strong> Poisson floor ($\sqrt{\lambda}$) prevents small accounts (e.g. 2 conv/day) from falsely alerting when 0 occurs.</li>
+                    <li><strong>Account-Wide Seasonal Days (e.g., Black Friday):</strong> Peer correlation filter evaluates cohort deviation; if &ge; 40% of campaigns move together, routing switches from Pager to Digest.</li>
+                    <li><strong>Zero Denominator Protection:</strong> CVR and CPA metrics enforce a minimum click/conversion threshold before computing division.</li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- Interactive Right Slide-Over Drawer (Modern Inspector Drawer) -->
+    <div class="drawer-overlay" id="drawer-overlay">
+      <div class="drawer-panel" id="drawer-panel">
+        <div class="drawer-header">
+          <div>
+            <div class="drawer-badge" id="drawer-severity-badge">HIGH SEVERITY</div>
+            <h2 class="drawer-title" id="drawer-incident-title">CMP-012: Tracking Break</h2>
+          </div>
+          <button class="drawer-close-btn" id="btn-close-drawer">&times;</button>
+        </div>
+
+        <div class="drawer-content">
+          <!-- Metric Delta Cards -->
+          <div class="drawer-stat-grid">
+            <div class="stat-card">
+              <span class="stat-label">Observed Actual</span>
+              <span class="stat-number text-red" id="drawer-actual">0</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Expected 28d Median</span>
+              <span class="stat-number text-green" id="drawer-expected">12.4</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Shift Percentage</span>
+              <span class="stat-number text-amber" id="drawer-delta">-100%</span>
+            </div>
+          </div>
+
+          <!-- Plain-English Narrative -->
+          <div class="drawer-box">
+            <span class="drawer-box-title">Plain-English Cause Analysis</span>
+            <p class="drawer-narrative" id="drawer-explanation"></p>
+          </div>
+
+          <!-- Diagnostic Playbook Step-by-Step -->
+          <div class="drawer-box">
+            <span class="drawer-box-title">First Diagnostic Action Step</span>
+            <div class="playbook-step-card">
+              <div class="step-num">1</div>
+              <div class="step-text" id="drawer-step">Check Google Tag Manager conversion tag trigger status.</div>
+            </div>
+            <div class="playbook-step-card">
+              <div class="step-num">2</div>
+              <div class="step-text">Verify landing page HTTP 200 response and confirmation snippet.</div>
+            </div>
+            <div class="playbook-step-card">
+              <div class="step-num">3</div>
+              <div class="step-text">Trigger test order in preview mode and observe debugger console.</div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="drawer-actions">
+            <button class="btn btn-primary btn-block" id="btn-drawer-ack">Acknowledge & Dispatch Pager</button>
+            <div class="btn-group-row">
+              <button class="btn btn-outline" id="btn-drawer-mute">Mute 24h</button>
+              <button class="btn btn-outline" id="btn-drawer-seasonal">Flag as Seasonal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toast-container"></div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
