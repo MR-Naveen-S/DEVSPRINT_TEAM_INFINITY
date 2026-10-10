@@ -1284,7 +1284,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const option = {
         backgroundColor: 'transparent',
-        grid: { top: 35, left: 45, right: 45, bottom: 25 },
+        grid: { top: 40, left: 45, right: 45, bottom: 25 },
         tooltip: {
           trigger: 'axis',
           backgroundColor: colors.tooltipBg,
@@ -1303,7 +1303,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         legend: {
           data: ['Incident Recall (%)', 'False Positive Rate (%)', 'Total Alerts'],
-          textStyle: { color: colors.textColor, fontSize: 11 },
+          textStyle: { color: colors.textColor, fontSize: 10 },
           top: 0
         },
         xAxis: {
@@ -1319,6 +1319,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           {
             type: 'value',
             name: 'Recall %',
+            nameTextStyle: { color: colors.textColor, fontSize: 10, padding: [0, 0, 0, -20] },
             min: 50,
             max: 105,
             axisLabel: { color: colors.textColor, fontSize: 10 },
@@ -1327,6 +1328,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           {
             type: 'value',
             name: 'FPR %',
+            nameTextStyle: { color: colors.textColor, fontSize: 10, padding: [0, 0, 0, 20] },
             min: 0,
             max: 18,
             axisLabel: { color: colors.textColor, fontSize: 10 },
@@ -1392,7 +1394,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const option = {
         backgroundColor: 'transparent',
-        grid: { top: 35, left: 45, right: 25, bottom: 25 },
+        grid: { top: 40, left: 45, right: 20, bottom: 25 },
         tooltip: {
           trigger: 'axis',
           backgroundColor: colors.tooltipBg,
@@ -1401,18 +1403,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         legend: {
           data: ['Immediate Pages (P1)', 'Daily Digest Alerts', 'Seasonal Suppressed'],
-          textStyle: { color: colors.textColor, fontSize: 11 },
-          top: 0
+          textStyle: { color: colors.textColor, fontSize: 10 },
+          top: 0,
+          right: 0
         },
         xAxis: {
           type: 'category',
-          data: ['21 Days (3w)', '28 Days (4w Recommended)', '35 Days (5w)'],
+          data: ['21 Days (3w)', '28 Days (4w)', '35 Days (5w)'],
           axisLine: { lineStyle: { color: colors.gridColor } },
-          axisLabel: { color: colors.textColor, fontSize: 10 }
+          axisLabel: {
+            interval: 0,
+            color: colors.textColor,
+            fontSize: 10
+          }
         },
         yAxis: {
           type: 'value',
           name: 'Alert Volume',
+          nameTextStyle: {
+            color: colors.textColor,
+            fontSize: 10,
+            align: 'left',
+            padding: [0, 0, 0, -35]
+          },
           axisLabel: { color: colors.textColor, fontSize: 10 },
           splitLine: { lineStyle: { color: colors.splitLineColor } }
         },
