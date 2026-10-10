@@ -1,0 +1,91 @@
+date,campaign_id,campaign_name,spend,impressions,clicks,conversions,revenue,bid_strategy
+2026-01-01,C01,Search - Brand Core (Stub Large),1635.38,31983,1196,50,3326.9,target_cpa
+2026-01-01,C02,Display - Retargeting (Stub Med),472.18,11805,369,12,840.63,target_cpa
+2026-01-01,C03,Search - Niche Longtail (Stub Small),49.43,1316,38,2,83.05,target_cpa
+2026-01-02,C01,Search - Brand Core (Stub Large),1631.33,30175,1283,42,3253.65,target_cpa
+2026-01-02,C02,Display - Retargeting (Stub Med),469.59,12484,355,14,1014.63,target_cpa
+2026-01-02,C03,Search - Niche Longtail (Stub Small),48.04,1238,37,2,82.81,target_cpa
+2026-01-03,C01,Search - Brand Core (Stub Large),1234.17,28382,999,36,2941.44,target_cpa
+2026-01-03,C02,Display - Retargeting (Stub Med),370.09,10792,295,9,711.06,target_cpa
+2026-01-03,C03,Search - Niche Longtail (Stub Small),38.61,1058,30,1,40.38,target_cpa
+2026-01-04,C01,Search - Brand Core (Stub Large),1310.1,25780,1065,39,3049.78,target_cpa
+2026-01-04,C02,Display - Retargeting (Stub Med),377.64,10348,307,8,577.84,target_cpa
+2026-01-04,C03,Search - Niche Longtail (Stub Small),36.95,987,29,1,43.22,target_cpa
+2026-01-05,C01,Search - Brand Core (Stub Large),1612.37,28957,1239,48,3951.91,target_cpa
+2026-01-05,C02,Display - Retargeting (Stub Med),489.0,13109,361,12,886.33,target_cpa
+2026-01-05,C03,Search - Niche Longtail (Stub Small),48.2,1182,34,1,40.46,target_cpa
+2026-01-06,C01,Search - Brand Core (Stub Large),1614.91,32606,1233,48,3642.08,target_cpa
+2026-01-06,C02,Display - Retargeting (Stub Med),465.34,12891,355,12,817.89,target_cpa
+2026-01-06,C03,Search - Niche Longtail (Stub Small),48.17,1291,35,2,82.91,target_cpa
+2026-01-07,C01,Search - Brand Core (Stub Large),1569.99,32565,1253,45,3058.05,target_cpa
+2026-01-07,C02,Display - Retargeting (Stub Med),480.12,11720,343,11,767.35,target_cpa
+2026-01-07,C03,Search - Niche Longtail (Stub Small),48.66,1236,39,2,74.24,target_cpa
+2026-01-08,C01,Search - Brand Core (Stub Large),1628.84,31178,1201,45,3048.28,target_cpa
+2026-01-08,C02,Display - Retargeting (Stub Med),445.94,12876,371,11,829.77,target_cpa
+2026-01-08,C03,Search - Niche Longtail (Stub Small),50.38,1227,37,2,78.48,target_cpa
+2026-01-09,C01,Search - Brand Core (Stub Large),1663.0,29928,1271,48,3991.27,target_cpa
+2026-01-09,C02,Display - Retargeting (Stub Med),460.56,12826,395,11,766.06,target_cpa
+2026-01-09,C03,Search - Niche Longtail (Stub Small),46.83,1235,34,2,71.12,target_cpa
+2026-01-10,C01,Search - Brand Core (Stub Large),1381.01,24237,1036,41,4026.03,target_cpa
+2026-01-10,C02,Display - Retargeting (Stub Med),386.62,10413,283,8,562.22,target_cpa
+2026-01-10,C03,Search - Niche Longtail (Stub Small),39.92,999,28,1,40.51,target_cpa
+2026-01-11,C01,Search - Brand Core (Stub Large),1250.44,25298,968,32,2478.2,target_cpa
+2026-01-11,C02,Display - Retargeting (Stub Med),374.94,11142,299,11,750.39,target_cpa
+2026-01-11,C03,Search - Niche Longtail (Stub Small),37.01,971,28,2,85.55,target_cpa
+2026-01-12,C01,Search - Brand Core (Stub Large),1565.16,30109,1320,49,3798.7,target_cpa
+2026-01-12,C02,Display - Retargeting (Stub Med),449.89,12194,375,12,812.54,target_cpa
+2026-01-12,C03,Search - Niche Longtail (Stub Small),47.03,1270,39,2,81.85,target_cpa
+2026-01-13,C01,Search - Brand Core (Stub Large),1646.26,33625,1273,45,3622.13,target_cpa
+2026-01-13,C02,Display - Retargeting (Stub Med),447.34,13605,370,11,941.48,target_cpa
+2026-01-13,C03,Search - Niche Longtail (Stub Small),50.09,1373,36,2,73.22,target_cpa
+2026-01-14,C01,Search - Brand Core (Stub Large),1574.68,30121,1301,45,3454.53,target_cpa
+2026-01-14,C02,Display - Retargeting (Stub Med),484.83,12814,394,12,763.86,target_cpa
+2026-01-14,C03,Search - Niche Longtail (Stub Small),45.62,1256,35,1,38.94,target_cpa
+2026-01-15,C01,Search - Brand Core (Stub Large),1544.79,32976,1179,0,0.0,target_cpa
+2026-01-15,C02,Display - Retargeting (Stub Med),469.59,13247,377,14,993.14,target_cpa
+2026-01-15,C03,Search - Niche Longtail (Stub Small),45.24,1245,37,2,80.58,target_cpa
+2026-01-16,C01,Search - Brand Core (Stub Large),1522.15,31861,1429,57,4332.57,target_cpa
+2026-01-16,C02,Display - Retargeting (Stub Med),495.85,11710,356,13,919.76,target_cpa
+2026-01-16,C03,Search - Niche Longtail (Stub Small),45.28,1219,33,2,76.68,target_cpa
+2026-01-17,C01,Search - Brand Core (Stub Large),1202.33,24406,1015,32,2951.09,target_cpa
+2026-01-17,C02,Display - Retargeting (Stub Med),429.63,9564,281,12,819.48,target_cpa
+2026-01-17,C03,Search - Niche Longtail (Stub Small),36.77,1001,30,2,78.45,target_cpa
+2026-01-18,C01,Search - Brand Core (Stub Large),1268.19,26510,1042,36,2508.36,target_cpa
+2026-01-18,C02,Display - Retargeting (Stub Med),374.1,10079,293,10,778.83,target_cpa
+2026-01-18,C03,Search - Niche Longtail (Stub Small),38.33,1072,29,1,40.0,target_cpa
+2026-01-19,C01,Search - Brand Core (Stub Large),1712.55,30383,1280,46,4057.68,target_cpa
+2026-01-19,C02,Display - Retargeting (Stub Med),495.56,12845,353,11,842.52,target_cpa
+2026-01-19,C03,Search - Niche Longtail (Stub Small),48.12,1290,33,2,73.2,target_cpa
+2026-01-20,C01,Search - Brand Core (Stub Large),1556.7,30766,1276,47,3625.42,target_cpa
+2026-01-20,C02,Display - Retargeting (Stub Med),426.4,12442,370,14,1030.29,target_cpa
+2026-01-20,C03,Search - Niche Longtail (Stub Small),44.04,1271,37,2,82.13,target_cpa
+2026-01-21,C01,Search - Brand Core (Stub Large),1554.44,34341,1166,51,3947.25,target_cpa
+2026-01-21,C02,Display - Retargeting (Stub Med),483.64,11953,361,14,1206.08,target_cpa
+2026-01-21,C03,Search - Niche Longtail (Stub Small),48.09,1336,37,2,85.48,target_cpa
+2026-01-22,C01,Search - Brand Core (Stub Large),1638.59,31036,1264,44,3114.37,target_cpa
+2026-01-22,C02,Display - Retargeting (Stub Med),486.91,13102,364,14,1214.63,target_cpa
+2026-01-22,C03,Search - Niche Longtail (Stub Small),45.09,1306,33,2,76.75,target_cpa
+2026-01-23,C01,Search - Brand Core (Stub Large),1512.41,33972,1300,44,3431.21,target_cpa
+2026-01-23,C02,Display - Retargeting (Stub Med),494.85,11856,355,12,944.92,target_cpa
+2026-01-23,C03,Search - Niche Longtail (Stub Small),48.04,1123,37,2,91.04,target_cpa
+2026-01-24,C01,Search - Brand Core (Stub Large),1196.84,23000,990,40,3501.03,target_cpa
+2026-01-24,C02,Display - Retargeting (Stub Med),395.16,10389,310,9,735.24,target_cpa
+2026-01-24,C03,Search - Niche Longtail (Stub Small),36.95,1031,30,1,39.53,target_cpa
+2026-01-25,C01,Search - Brand Core (Stub Large),1222.14,25306,1039,42,3234.16,target_cpa
+2026-01-25,C02,Display - Retargeting (Stub Med),385.61,10984,286,9,722.17,target_cpa
+2026-01-25,C03,Search - Niche Longtail (Stub Small),39.56,1020,31,1,41.81,target_cpa
+2026-01-26,C01,Search - Brand Core (Stub Large),1679.38,35387,1247,38,2849.29,target_cpa
+2026-01-26,C02,Display - Retargeting (Stub Med),449.43,12668,392,10,659.82,target_cpa
+2026-01-26,C03,Search - Niche Longtail (Stub Small),47.78,1210,37,2,71.45,target_cpa
+2026-01-27,C01,Search - Brand Core (Stub Large),1604.21,28063,1263,45,3702.17,target_cpa
+2026-01-27,C02,Display - Retargeting (Stub Med),482.63,12687,381,12,850.67,target_cpa
+2026-01-27,C03,Search - Niche Longtail (Stub Small),46.51,1248,37,2,83.41,target_cpa
+2026-01-28,C01,Search - Brand Core (Stub Large),1454.31,31084,1252,51,3575.87,target_cpa
+2026-01-28,C02,Display - Retargeting (Stub Med),486.88,11699,327,11,806.41,target_cpa
+2026-01-28,C03,Search - Niche Longtail (Stub Small),47.12,1272,38,2,89.15,target_cpa
+2026-01-29,C01,Search - Brand Core (Stub Large),1484.43,31645,1208,44,3187.51,target_cpa
+2026-01-29,C02,Display - Retargeting (Stub Med),447.09,12376,382,14,1083.52,target_cpa
+2026-01-29,C03,Search - Niche Longtail (Stub Small),43.91,1196,37,2,86.17,target_cpa
+2026-01-30,C01,Search - Brand Core (Stub Large),1534.31,30561,1226,42,3380.42,target_cpa
+2026-01-30,C02,Display - Retargeting (Stub Med),498.13,12481,373,13,948.63,target_cpa
+2026-01-30,C03,Search - Niche Longtail (Stub Small),49.4,1170,38,2,82.49,target_cpa
