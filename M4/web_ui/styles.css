@@ -674,8 +674,9 @@ body {
 /* ================= Surface Card & Grids ================= */
 .grid-layout-2-1 {
   display: grid;
-  grid-template-columns: 2.2fr 1fr;
+  grid-template-columns: minmax(0, 1.55fr) minmax(340px, 1fr);
   gap: 1rem;
+  align-items: start;
 }
 
 .surface-card {
@@ -685,6 +686,8 @@ body {
   padding: 1rem 1.15rem;
   box-shadow: var(--shadow-sm);
   margin-bottom: 1rem;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .surface-header {
@@ -850,8 +853,9 @@ body {
 }
 
 .feed-quick-tabs {
-  display: flex;
-  gap: 0.35rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.25rem;
   margin-bottom: 0.65rem;
   background-color: var(--bg-subsurface);
   padding: 2px;
@@ -859,18 +863,23 @@ body {
 }
 
 .feed-tab-btn {
-  flex: 1;
   background: transparent;
   border: none;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-family: var(--font-body);
   font-weight: 600;
   color: var(--text-secondary);
-  padding: 0.25rem 0.4rem;
+  padding: 0.3rem 0.2rem;
   border-radius: var(--radius-xs);
   cursor: pointer;
   transition: all var(--transition-fast);
   white-space: nowrap;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .feed-tab-btn.active {
@@ -908,6 +917,8 @@ body {
   gap: 0.45rem;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .triage-card:hover {
@@ -935,7 +946,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  flex-wrap: wrap;
 }
 
 .triage-type-tag {
@@ -977,7 +989,7 @@ body {
 .triage-delta-row {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 
@@ -1003,7 +1015,7 @@ body {
 }
 
 .triage-metric-stat {
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   color: var(--text-secondary);
 }
 
@@ -1012,16 +1024,16 @@ body {
 }
 
 .triage-snippet {
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   color: var(--text-secondary);
   line-height: 1.4;
   margin: 0.2rem 0 0.4rem;
 }
 
 .triage-actions-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
   margin-top: 0.2rem;
   padding-top: 0.45rem;
   border-top: 1px solid var(--border-subtle);
@@ -1032,9 +1044,9 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
-  padding: 0.32rem 0.65rem;
-  font-size: 0.74rem;
+  gap: 0.25rem;
+  padding: 0.32rem 0.35rem;
+  font-size: 0.72rem;
   font-family: var(--font-body);
   font-weight: 600;
   border-radius: var(--radius-sm);
@@ -1045,6 +1057,15 @@ body {
   transition: all var(--transition-fast);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   outline: none;
+  white-space: nowrap;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn-card-action span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .btn-card-action svg {
@@ -1140,6 +1161,14 @@ body {
   padding: 0.55rem 0.75rem;
   border-bottom: 1px solid var(--border-subtle);
   color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.clean-table td.cell-explanation {
+  white-space: normal;
+  min-width: 220px;
+  max-width: 420px;
+  line-height: 1.35;
 }
 
 .clean-table tbody tr:hover {
@@ -1175,6 +1204,7 @@ body {
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
+  white-space: nowrap;
 }
 
 .chip-filter:hover {
@@ -1213,10 +1243,13 @@ body {
   font-size: 0.65rem;
   font-family: var(--font-mono);
   font-weight: 700;
-  padding: 0.15rem 0.45rem;
+  padding: 0.18rem 0.5rem;
   border-radius: 4px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   white-space: nowrap;
+  line-height: 1.2;
 }
 
 .severity-high { background-color: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
@@ -1953,11 +1986,16 @@ body {
 }
 
 .tag-pill {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-family: var(--font-mono);
   font-weight: 700;
-  padding: 0.15rem 0.45rem;
-  border-radius: 10px;
+  padding: 0.18rem 0.5rem;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
 .tag-green { background-color: var(--brand-muted); color: var(--brand-primary); border: 1px solid var(--brand-border); }
@@ -2009,7 +2047,13 @@ body {
     grid-template-columns: repeat(3, 1fr);
   }
   .grid-layout-2-1 {
-    grid-template-columns: 1.8fr 1fr;
+    grid-template-columns: minmax(0, 1.4fr) minmax(320px, 1fr);
+  }
+}
+
+@media (max-width: 1140px) {
+  .grid-layout-2-1 {
+    grid-template-columns: 1fr;
   }
 }
 
