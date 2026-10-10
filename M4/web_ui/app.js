@@ -1346,8 +1346,15 @@ document.addEventListener('DOMContentLoaded', async () => {
               itemStyle: {
                 color: colors.isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.12)'
               },
+              label: {
+                position: 'insideBottom',
+                color: colors.brandPrimary,
+                fontSize: 10,
+                fontWeight: 600,
+                offset: [0, -6]
+              },
               data: [
-                [{ name: 'Optimal Flat Region (T = 4.0 - 5.5)', xAxis: '4.0' }, { xAxis: '5.5' }]
+                [{ name: 'Optimal Flat Region (T = 4.0 – 5.5)', xAxis: '4.0' }, { xAxis: '5.5' }]
               ]
             }
           },
