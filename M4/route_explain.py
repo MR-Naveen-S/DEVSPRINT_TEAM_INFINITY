@@ -75,9 +75,9 @@ def run_routing(flag_df):
             'severity': severity,
             'route': route,
             'metric': row['metric'],
-            'actual': float(row['actual']),
-            'expected': float(row['expected']),
-            'delta_pct': float(row['delta_pct']),
+            'actual': round(float(row['actual']), 2),
+            'expected': round(float(row['expected']), 2),
+            'delta_pct': round(float(row['delta_pct']), 1),
             'baseline': f"{config.WINDOW}-day median, weekday-adjusted",
             'explanation': explanation,
             'first_step': first_step

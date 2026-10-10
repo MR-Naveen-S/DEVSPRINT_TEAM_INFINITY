@@ -148,6 +148,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     state.data = [...state.fullData];
   }
 
+  // Helper: Format numbers up to max 2 decimals (e.g. 111 -> 111, 112.5 -> 112.5, 4043.77999 -> 4043.78)
+  function formatDec(val, maxDec = 2) {
+    if (val === null || val === undefined || isNaN(val)) return '0';
+    const num = typeof val === 'number' ? val : parseFloat(val);
+    if (isNaN(num)) return String(val);
+    const factor = Math.pow(10, maxDec);
+    const rounded = Math.round(num * factor) / factor;
+    return rounded.toString();
+  }
+
+  function cleanExplanation(str) {
+    if (!str) return '';
+    return str.replace(/\b(\d+\.\d{3,})\b/g, (match, p1) => {
+      const num = parseFloat(p1);
+      return isNaN(num) ? match : formatDec(num, 2);
+    });
+  }
+
   function parseAlertsCSV(csvText) {
     const lines = csvText.trim().split('\n');
     if (lines.length < 2) return;
@@ -173,10 +191,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       const severity = cols[3];
       const route = cols[4];
       const metric = cols[5];
-      const actual = parseFloat(cols[6]) || 0;
-      const expected = parseFloat(cols[7]) || 0;
+      const rawActual = parseFloat(cols[6]);
+      const rawExpected = parseFloat(cols[7]);
+      const actual = !isNaN(rawActual) ? parseFloat(rawActual.toFixed(2)) : 0;
+      const expected = !isNaN(rawExpected) ? parseFloat(rawExpected.toFixed(2)) : 0;
       const deltaPct = parseFloat(cols[8]) || 0;
-      const explanation = cols[10] || '';
+      const explanation = cleanExplanation(cols[10] || '');
       const playbook = cols[11] || '';
 
       state.fullAlerts.push({
@@ -966,14 +986,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           '<div class="triage-delta-row">' +
             '<span class="delta-badge ' + (alert.pctDelta < 0 ? 'delta-neg' : 'delta-pos') + '">' +
-              (alert.pctDelta > 0 ? '+' : '') + alert.pctDelta + '%' +
+              (alert.pctDelta > 0 ? '+' : '') + formatDec(alert.pctDelta, 1) + '%' +
             '</span>' +
             '<span class="triage-metric-stat">' +
-              'Metric: <b>' + alert.metric + '</b> | Actual: <b>' + alert.actual + '</b> (Exp: ' + alert.expected + ')' +
+              'Metric: <b>' + alert.metric + '</b> | Actual: <b>' + formatDec(alert.actual, 2) + '</b> (Exp: ' + formatDec(alert.expected, 2) + ')' +
             '</span>' +
           '</div>' +
 
-          '<p class="triage-snippet">' + alert.explanation + '</p>' +
+          '<p class="triage-snippet">' + cleanExplanation(alert.explanation) + '</p>' +
 
           '<div class="triage-actions-bar">' +
             '<button class="btn-card-action btn-inspect" data-alert-id="' + alert.id + '">' +
@@ -1173,10 +1193,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             '<td><code>' + r.date + '</code></td>' +
             '<td><strong>' + r.campaign + '</strong></td>' +
             '<td><span class="meta-chip chip-neutral">' + metric + '</span></td>' +
-            '<td>' + r[metric] + '</td>' +
-            '<td>' + med.toFixed(2) + '</td>' +
-            '<td>' + rawMad.toFixed(2) + '</td>' +
-            '<td>' + effectiveMAD.toFixed(2) + '</td>' +
+            '<td>' + formatDec(r[metric], 2) + '</td>' +
+            '<td>' + formatDec(med, 2) + '</td>' +
+            '<td>' + formatDec(rawMad, 2) + '</td>' +
+            '<td>' + formatDec(effectiveMAD, 2) + '</td>' +
             '<td><span class="' + (z >= state.currentT ? 'text-red font-bold' : '') + '">' + z.toFixed(2) + '</span></td>' +
             '<td>' +
               (isFrozen ? '<span class="tag-pill tag-red">Frozen (Excluded)</span>' : '<span class="tag-pill tag-green">Active Memory</span>') +
@@ -1232,13 +1252,13 @@ document.addEventListener('DOMContentLoaded', async () => {
           '<td><code>' + alert.date + '</code></td>' +
           '<td><b>' + alert.anomalyType.replace(/_/g, ' ') + '</b></td>' +
           '<td><span class="meta-chip chip-neutral">' + alert.metric + '</span></td>' +
-          '<td>' + alert.actual + ' / ' + alert.expected + '</td>' +
+          '<td>' + formatDec(alert.actual, 2) + ' / ' + formatDec(alert.expected, 2) + '</td>' +
           '<td>' +
             '<span class="delta-badge ' + (alert.pctDelta < 0 ? 'delta-neg' : 'delta-pos') + '">' +
-              (alert.pctDelta > 0 ? '+' : '') + alert.pctDelta + '%' +
+              (alert.pctDelta > 0 ? '+' : '') + formatDec(alert.pctDelta, 1) + '%' +
             '</span>' +
           '</td>' +
-          '<td class="cell-explanation">' + alert.explanation + '</td>' +
+          '<td class="cell-explanation">' + cleanExplanation(alert.explanation) + '</td>' +
           '<td>' +
             '<button class="btn btn-xs btn-outline btn-open-playbook" data-alert-id="' + alert.id + '">Inspect</button>' +
           '</td>' +
@@ -1633,15 +1653,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       title.textContent = `${alert.campaign}: ${typeLabel}`;
     }
     if (actual) {
-      actual.textContent = typeof alert.actual === 'number' ? (alert.actual % 1 === 0 ? alert.actual : alert.actual.toFixed(1)) : alert.actual;
+      actual.textContent = formatDec(alert.actual, 2);
     }
     if (expected) {
-      expected.textContent = typeof alert.expected === 'number' ? (alert.expected % 1 === 0 ? alert.expected : alert.expected.toFixed(1)) : alert.expected;
+      expected.textContent = formatDec(alert.expected, 2);
     }
     if (delta) {
       const d = parseFloat(alert.pctDelta);
       const isPositive = d > 0;
-      delta.textContent = (isPositive ? '+' : '') + (isNaN(d) ? alert.pctDelta : (d % 1 === 0 ? d : d.toFixed(1))) + '%';
+      delta.textContent = (isPositive ? '+' : '') + (isNaN(d) ? alert.pctDelta : formatDec(d, 1)) + '%';
       if (d === 0) {
         delta.className = 'stat-number text-amber';
       } else if (d < 0) {
@@ -1650,7 +1670,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         delta.className = 'stat-number text-green';
       }
     }
-    if (exp) exp.textContent = alert.explanation || 'No cause analysis available for this alert.';
+    if (exp) exp.textContent = cleanExplanation(alert.explanation) || 'No cause analysis available for this alert.';
     if (step) step.textContent = alert.playbook || 'Verify tag container snippet and server response.';
 
     if (overlay) overlay.classList.add('active');
