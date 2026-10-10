@@ -501,6 +501,19 @@
                 <span class="tag-pill tag-neutral">Invariance Score: 98.4%</span>
               </div>
 
+              <!-- Interactive Window Selector Bar -->
+              <div class="simulator-slider-bar">
+                <div class="slider-header-info">
+                  <span>Lookback Window Selection (W Days):</span>
+                  <strong class="slider-active-val" id="bench-w-val">W = 28 Days (Optimal)</strong>
+                </div>
+                <div class="window-toggle-strip">
+                  <button class="win-btn" data-win="21">21 Days (3w)</button>
+                  <button class="win-btn active" data-win="28">28 Days (4w · Optimal)</button>
+                  <button class="win-btn" data-win="35">35 Days (5w)</button>
+                </div>
+              </div>
+
               <div class="chart-container-echarts-sm" id="sensitivityChartCanvas"></div>
               
               <div class="analysis-box-modern">

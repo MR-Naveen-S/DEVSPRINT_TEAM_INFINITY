@@ -1260,9 +1260,18 @@ body {
 /* ================= 2x2 Grid for Benchmark ================= */
 .grid-2x2 {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  align-items: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.15rem;
+  align-items: stretch;
+  margin-bottom: 1.25rem;
+}
+
+.grid-2x2 > .surface-card {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 /* Benchmark Simulator Slider */

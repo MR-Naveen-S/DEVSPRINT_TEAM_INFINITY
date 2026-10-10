@@ -1522,6 +1522,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelectorAll('.window-toggle-strip .win-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const win = parseInt(btn.getAttribute('data-win'), 10);
+        const wValEl = document.getElementById('bench-w-val');
+        if (wValEl) {
+          wValEl.textContent = 'W = ' + win + ' Days ' + (win === 28 ? '(Optimal)' : '');
+        }
         showToast('Evaluating Lookback Window = ' + win + ' Days (Weekday Seasonal Balance)', 'info');
       });
     });
