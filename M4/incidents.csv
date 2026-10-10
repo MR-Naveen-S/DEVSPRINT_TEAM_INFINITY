@@ -1,0 +1,5 @@
+campaign,start,end,type
+CMP-001,2026-03-15,2026-03-20,tracking_break
+CMP-002,2026-03-22,2026-03-25,budget_exhausted
+CMP-003,2026-03-10,2026-03-14,bid_strategy_change
+CMP-004,2026-03-28,2026-03-31,seasonal
